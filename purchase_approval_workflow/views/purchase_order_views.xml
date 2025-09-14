@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Extend Purchase Order Form View -->
+    <record id="view_purchase_order_form_inherit_approval" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherit.approval</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            
+            <!-- Add approval buttons -->
+            <xpath expr="//button[@name='button_confirm']" position="after">
+                <button name="action_approve_level1" 
+                        type="object" 
+                        string="Level 1 Approve" 
+                        class="btn-primary"
+                        invisible="state != 'to_approve' or approval_level_required == 'auto'"
+                        groups="purchase_approval_workflow.group_purchase_level1_approver"/>
+                
+                <button name="action_approve_level2" 
+                        type="object" 
+                        string="Level 2 Approve" 
+                        class="btn-primary"
+                        invisible="state not in ['to_approve', 'approved_level1'] or approval_level_required == 'level1'"
+                        groups="purchase_approval_workflow.group_purchase_level2_approver"/>
+                
+                <button name="action_reject" 
+                        type="object" 
+                        string="Reject" 
+                        class="btn-secondary"
+                        invisible="state not in ['to_approve', 'approved_level1']"
+                        groups="purchase_approval_workflow.group_purchase_level1_approver"/>
+            </xpath>
+            
+            <!-- Add approval information fields -->
+            <xpath expr="//field[@name='date_order']" position="after">
+                <field name="approval_level_required" readonly="1"/>
+            </xpath>
+            
+            <!-- Add approval tracking fields -->
+            <xpath expr="//page[@name='purchase_delivery_invoice']" position="after">
+                <page string="Approval History" name="approval_history">
+                    <group>
+                        <group name="level1_approval">
+                            <field name="level1_approver_id" readonly="1"/>
+                            <field name="level1_approval_date" readonly="1"/>
+                        </group>
+                        <group name="level2_approval">
+                            <field name="level2_approver_id" readonly="1"/>
+                            <field name="level2_approval_date" readonly="1"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+            
+        </field>
+    </record>
+
+    <!-- Extend Purchase Order List View to show approval level -->
+    <record id="view_purchase_order_tree_inherit_approval" model="ir.ui.view">
+        <field name="name">purchase.order.tree.inherit.approval</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='amount_total']" position="after">
+                <field name="approval_level_required" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

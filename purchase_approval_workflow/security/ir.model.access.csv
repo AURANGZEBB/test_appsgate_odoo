@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_purchase_order_level1,purchase.order.level1,purchase.model_purchase_order,group_purchase_level1_approver,1,1,1,0
+access_purchase_order_level2,purchase.order.level2,purchase.model_purchase_order,group_purchase_level2_approver,1,1,1,0
+access_purchase_approval_config,purchase.approval.config,model_purchase_approval_config,purchase.group_purchase_manager,1,1,1,1
+access_purchase_approval_config_user,purchase.approval.config.user,model_purchase_approval_config,base.group_user,1,0,0,0

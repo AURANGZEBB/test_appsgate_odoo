@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- List View -->
+    <record id="view_purchase_approval_config_tree" model="ir.ui.view">
+        <field name="name">purchase.approval.config.tree</field>
+        <field name="model">purchase.approval.config</field>
+        <field name="arch" type="xml">
+            <list string="Purchase Approval Configuration">
+                <field name="name"/>
+                <field name="auto_approve_limit"/>
+                <field name="level1_approve_limit"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_purchase_approval_config_form" model="ir.ui.view">
+        <field name="name">purchase.approval.config.form</field>
+        <field name="model">purchase.approval.config</field>
+        <field name="arch" type="xml">
+            <form string="Purchase Approval Configuration">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <field name="active" widget="boolean_button" 
+                               options="{'terminology': 'archive'}"/>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Default Approval Configuration"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group name="approval_limits">
+                            <field name="auto_approve_limit"/>
+                            <field name="level1_approve_limit"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group name="help_info">
+                            <div class="o_row">
+                                <div class="alert alert-info" role="alert">
+                                    <strong>Approval Levels:</strong><br/>
+                                    • Orders ≤ Auto Approve Limit: Automatically approved<br/>
+                                    • Orders ≤ Level 1 Limit: Require Level 1 approval<br/>
+                                    • Orders > Level 1 Limit: Require Level 2 approval
+                                </div>
+                            </div>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_purchase_approval_config" model="ir.actions.act_window">
+        <field name="name">Purchase Approval Configuration</field>
+        <field name="res_model">purchase.approval.config</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first approval configuration
+            </p>
+            <p>
+                Configure approval limits for purchase orders. Set thresholds for auto-approval,
+                Level 1 approval, and Level 2 approval based on order amounts.
+            </p>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Extend Sale Order Form View -->
+    <record id="view_sale_order_form_inherit_advance_payment" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.advance.payment</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            
+            <!-- Add advance payment fields after order lines -->
+            <xpath expr="//field[@name='order_line']" position="after">
+                <group name="advance_payment_group" string="Advance Payment" invisible="state in ['cancel']">
+                    <group>
+                        <field name="advance_payment" invisible="state not in ['draft', 'sent']"/>
+                        <field name="advance_payment" readonly="1" invisible="state in ['draft', 'sent']"/>
+                        <field name="advance_payment_state"/>
+                    </group>
+                    <group>
+                        <field name="advance_journal_entry_id" readonly="1" invisible="not advance_journal_entry_id"/>
+                    </group>
+                </group>
+            </xpath>
+            
+            <!-- Add button to view journal entry -->
+            <xpath expr="//button[@name='action_quotation_send']" position="after">
+                <button name="action_view_advance_journal_entry" 
+                        type="object" 
+                        string="View Advance Entry" 
+                        class="btn-secondary"
+                        invisible="not advance_journal_entry_id"/>
+            </xpath>
+            
+        </field>
+    </record>
+
+    <!-- Extend Sale Order List View -->
+    <record id="view_sale_order_tree_inherit_advance_payment" model="ir.ui.view">
+        <field name="name">sale.order.tree.inherit.advance.payment</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='amount_total']" position="after">
+                <field name="advance_payment" optional="show" sum="Total Advance"/>
+                <field name="advance_payment_state" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

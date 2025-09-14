@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- QWeb Report Definition -->
+    <record id="action_report_sales_profitability" model="ir.actions.report">
+        <field name="name">Sales Profitability Report</field>
+        <field name="model">sales.profitability.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">sales_profitability_report.profitability_report_template</field>
+        <field name="report_file">sales_profitability_report.profitability_report_template</field>
+        <field name="binding_model_id" ref="model_sales_profitability_wizard"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- QWeb Report Template -->
+    <template id="profitability_report_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <div class="oe_structure"/>
+                    
+                    <!-- Report Header -->
+                    <div class="row">
+                        <div class="col-12">
+                            <h2 class="text-center">Sales Profitability Report</h2>
+                            <div class="text-center mb-4">
+                                <strong>Period:</strong> <span t-esc="wizard.date_from"/> to <span t-esc="wizard.date_to"/>
+                                <t t-if="wizard.partner_ids">
+                                    <br/><strong>Customers:</strong> <span t-esc="', '.join(wizard.partner_ids.mapped('name'))"/>
+                                </t>
+                                <t t-if="wizard.categ_ids">
+                                    <br/><strong>Categories:</strong> <span t-esc="', '.join(wizard.categ_ids.mapped('name'))"/>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Summary Section -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h4>Summary</h4>
+                            <table class="table table-bordered">
+                                <tr class="table-info">
+                                    <th>Total Revenue</th>
+                                    <th>Total Cost</th>
+                                    <th>Total Margin</th>
+                                    <th>Margin %</th>
+                                </tr>
+                                <tr>
+                                    <td><span t-esc="total_revenue" t-options="{'widget': 'monetary', 'display_currency': currency}"/></td>
+                                    <td><span t-esc="total_cost" t-options="{'widget': 'monetary', 'display_currency': currency}"/></td>
+                                    <td><span t-esc="total_margin" t-options="{'widget': 'monetary', 'display_currency': currency}"/></td>
+                                    <td><span t-esc="total_margin_percent" t-options="{'widget': 'float', 'precision': 2}"/>%</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Detailed Orders Section -->
+                    <div class="row">
+                        <div class="col-12">
+                            <h4>Order-wise Profitability</h4>
+                            <table class="table table-sm table-bordered">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Order</th>
+                                        <th>Date</th>
+                                        <th>Customer</th>
+                                        <th>Revenue</th>
+                                        <th>Cost</th>
+                                        <th>Margin</th>
+                                        <th>Margin %</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="orders" t-as="order_data">
+                                        <tr>
+                                            <td><strong t-esc="order_data['order_name']"/></td>
+                                            <td><span t-esc="order_data['order_date']" t-options="{'widget': 'date'}"/></td>
+                                            <td><span t-esc="order_data['customer']"/></td>
+                                            <td><span t-esc="order_data['revenue']" t-options="{'widget': 'monetary', 'display_currency': currency}"/></td>
+                                            <td><span t-esc="order_data['cost']" t-options="{'widget': 'monetary', 'display_currency': currency}"/></td>
+                                            <td>
+                                                <span t-esc="order_data['margin']" t-options="{'widget': 'monetary', 'display_currency': currency}"
+                                                      t-att-class="'text-success' if order_data['margin'] > 0 else 'text-danger'"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="order_data['margin_percent']" t-options="{'widget': 'float', 'precision': 2}"
+                                                      t-att-class="'text-success' if order_data['margin_percent'] > 0 else 'text-danger'"/>%
+                                            </td>
+                                        </tr>
+                                        
+                                        <!-- Order Lines Detail (Optional - can be toggled) -->
+                                        <t t-if="order_data.get('lines') and len(order_data['lines']) > 1">
+                                            <tr class="table-light">
+                                                <td colspan="7">
+                                                    <small><strong>Product Lines:</strong></small>
+                                                    <table class="table table-sm mb-0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Product</th>
+                                                                <th>Category</th>
+                                                                <th>Qty</th>
+                                                                <th>Unit Price</th>
+                                                                <th>Revenue</th>
+                                                                <th>Cost</th>
+                                                                <th>Margin</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <t t-foreach="order_data['lines']" t-as="line">
+                                                                <tr>
+                                                                    <td><small t-esc="line['product']"/></td>
+                                                                    <td><small t-esc="line['category']"/></td>
+                                                                    <td><small t-esc="line['quantity']" t-options="{'widget': 'float', 'precision': 2}"/></td>
+                                                                    <td><small t-esc="line['unit_price']" t-options="{'widget': 'monetary', 'display_currency': currency}"/></td>
+                                                                    <td><small t-esc="line['revenue']" t-options="{'widget': 'monetary', 'display_currency': currency}"/></td>
+                                                                    <td><small t-esc="line['cost']" t-options="{'widget': 'monetary', 'display_currency': currency}"/></td>
+                                                                    <td><small t-esc="line['margin']" t-options="{'widget': 'monetary', 'display_currency': currency}"/></td>
+                                                                </tr>
+                                                            </t>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="oe_structure"/>
+                </div>
+            </t>
+        </t>
+    </template>
+
+</odoo>

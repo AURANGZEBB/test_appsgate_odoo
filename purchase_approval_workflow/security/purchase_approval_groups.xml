@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Purchase Approval Groups -->
+    <record id="group_purchase_level1_approver" model="res.groups">
+        <field name="name">Purchase Level 1 Approver</field>
+        <field name="comment">Can approve purchase orders up to 20,000</field>
+    </record>
+
+    <record id="group_purchase_level2_approver" model="res.groups">
+        <field name="name">Purchase Level 2 Approver</field>
+        <field name="comment">Can approve purchase orders above 20,000</field>
+    </record>
+
+</odoo>

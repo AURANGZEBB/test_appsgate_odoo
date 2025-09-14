@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- List View -->
+    <record id="view_sale_discount_rule_tree" model="ir.ui.view">
+        <field name="name">sale.discount.rule.tree</field>
+        <field name="model">sale.discount.rule</field>
+        <field name="arch" type="xml">
+            <list string="Discount Rules">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="min_amount"/>
+                <field name="max_amount"/>
+                <field name="discount_percent"/>
+                <field name="customer_group"/>
+                <field name="valid_from"/>
+                <field name="valid_to"/>
+                <field name="active"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_sale_discount_rule_form" model="ir.ui.view">
+        <field name="name">sale.discount.rule.form</field>
+        <field name="model">sale.discount.rule</field>
+        <field name="arch" type="xml">
+            <form string="Discount Rule">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <field name="active" widget="boolean_button" 
+                               options="{'terminology': 'archive'}"/>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Volume Discount 10%"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group name="rule_criteria">
+                            <field name="sequence"/>
+                            <field name="min_amount"/>
+                            <field name="max_amount"/>
+                            <field name="customer_group"/>
+                        </group>
+                        <group name="discount_config">
+                            <field name="discount_percent"/>
+                            <field name="valid_from"/>
+                            <field name="valid_to"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <!-- Action -->
+    <record id="action_sale_discount_rule" model="ir.actions.act_window">
+        <field name="name">Discount Rules</field>
+        <field name="res_model">sale.discount.rule</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first discount rule
+            </p>
+            <p>
+                Define discount rules based on order amounts to automatically apply discounts to sales orders.
+                You can set minimum and maximum amounts, and choose between percentage or fixed amount discounts.
+            </p>
+        </field>
+    </record>
+
+</odoo>

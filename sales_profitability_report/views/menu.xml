@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Main Menu Item -->
+    <menuitem id="menu_sales_profitability_report" 
+              name="Sales Profitability Report" 
+              parent="sale.menu_sale_report" 
+              action="action_sales_profitability_wizard" 
+              sequence="40"/>
+
+</odoo>

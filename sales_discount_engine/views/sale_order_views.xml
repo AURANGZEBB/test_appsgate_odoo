@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Extend Sale Order Form View -->
+    <record id="view_order_form_inherit_discount" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.discount</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_quotation_send']" position="after">
+                <button name="action_reapply_discount" 
+                        type="object" 
+                        string="Reapply Discount" 
+                        class="btn-secondary"
+                        invisible="state not in ['draft', 'sent']"/>
+            </xpath>
+            
+            <!-- Add discount information fields -->
+            <xpath expr="//field[@name='partner_shipping_id']" position="after">
+                <field name="applied_discount_rule_id" readonly="1" 
+                       invisible="not applied_discount_rule_id"/>
+                <field name="applied_discount_amount" readonly="1" 
+                       invisible="applied_discount_amount == 0.0"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

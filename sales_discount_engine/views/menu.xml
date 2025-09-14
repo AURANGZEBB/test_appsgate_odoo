@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Main Menu -->
+    <menuitem id="menu_sales_discount_engine" 
+              name="Discount Engine" 
+              parent="sale.sale_menu_root" 
+              sequence="20"/>
+    
+    <!-- Configuration Menu -->
+    <menuitem id="menu_discount_configuration" 
+              name="Configuration" 
+              parent="menu_sales_discount_engine" 
+              sequence="10"/>
+    
+    <!-- Discount Rules Menu Item -->
+    <menuitem id="menu_sale_discount_rules" 
+              name="Discount Rules" 
+              parent="menu_discount_configuration" 
+              action="action_sale_discount_rule" 
+              sequence="10"/>
+    
+    <!-- Customer Groups Menu Item -->
+    <menuitem id="menu_customer_groups" 
+              name="Customer Groups" 
+              parent="menu_discount_configuration" 
+              action="action_customer_group" 
+              sequence="20"/>
+
+</odoo>

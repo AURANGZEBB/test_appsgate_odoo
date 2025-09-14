@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Level 1 Approval Request Template -->
+    <record id="mail_template_level1_approval_request" model="mail.template">
+        <field name="name">Purchase Order: Level 1 Approval Required</field>
+        <field name="model_id" ref="purchase.model_purchase_order"/>
+        <field name="subject">Purchase Order {{ object.name }} - Level 1 Approval Required</field>
+        <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px;">
+    <p>Hello,</p>
+    <p>A purchase order requires your Level 1 approval:</p>
+    <ul>
+        <li><strong>Purchase Order:</strong> <t t-out="object.name">PO001</t></li>
+        <li><strong>Vendor:</strong> <t t-out="object.partner_id.name">Vendor Name</t></li>
+        <li><strong>Amount:</strong> <t t-out="object.amount_total">1000.00</t> <t t-out="object.currency_id.name">USD</t></li>
+        <li><strong>Requested by:</strong> <t t-out="object.user_id.name">User Name</t></li>
+    </ul>
+    <p>Please review and approve this purchase order.</p>
+    <p>Best regards,<br/>Purchase Team</p>
+</div>
+        </field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+
+    <!-- Level 2 Approval Request Template -->
+    <record id="mail_template_level2_approval_request" model="mail.template">
+        <field name="name">Purchase Order: Level 2 Approval Required</field>
+        <field name="model_id" ref="purchase.model_purchase_order"/>
+        <field name="subject">Purchase Order {{ object.name }} - Level 2 Approval Required</field>
+        <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px;">
+    <p>Hello,</p>
+    <p>A high-value purchase order requires your Level 2 approval:</p>
+    <ul>
+        <li><strong>Purchase Order:</strong> <t t-out="object.name">PO001</t></li>
+        <li><strong>Vendor:</strong> <t t-out="object.partner_id.name">Vendor Name</t></li>
+        <li><strong>Amount:</strong> <t t-out="object.amount_total">25000.00</t> <t t-out="object.currency_id.name">USD</t></li>
+        <li><strong>Requested by:</strong> <t t-out="object.user_id.name">User Name</t></li>
+    </ul>
+    <p>This purchase order exceeds the Level 1 approval limit and requires Level 2 authorization.</p>
+    <p>Best regards,<br/>Purchase Team</p>
+</div>
+        </field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+
+    <!-- Level 1 Approved (Final) Template -->
+    <record id="mail_template_level1_approved" model="mail.template">
+        <field name="name">Purchase Order: Level 1 Approved</field>
+        <field name="model_id" ref="purchase.model_purchase_order"/>
+        <field name="subject">Purchase Order {{ object.name }} - Approved</field>
+        <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px;">
+    <p>Hello,</p>
+    <p>Your purchase order has been approved:</p>
+    <ul>
+        <li><strong>Purchase Order:</strong> <t t-out="object.name">PO001</t></li>
+        <li><strong>Vendor:</strong> <t t-out="object.partner_id.name">Vendor Name</t></li>
+        <li><strong>Amount:</strong> <t t-out="object.amount_total">15000.00</t> <t t-out="object.currency_id.name">USD</t></li>
+        <li><strong>Approved by:</strong> <t t-out="object.level1_approver_id.name">Approver Name</t></li>
+        <li><strong>Approval Date:</strong> <t t-out="object.level1_approval_date">2023-01-01</t></li>
+    </ul>
+    <p>You can now proceed with the purchase.</p>
+    <p>Best regards,<br/>Purchase Team</p>
+</div>
+        </field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+
+    <!-- Level 1 Approved Pending Level 2 Template -->
+    <record id="mail_template_level1_approved_pending_level2" model="mail.template">
+        <field name="name">Purchase Order: Level 1 Approved, Level 2 Pending</field>
+        <field name="model_id" ref="purchase.model_purchase_order"/>
+        <field name="subject">Purchase Order {{ object.name }} - Level 1 Approved, Level 2 Pending</field>
+        <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px;">
+    <p>Hello,</p>
+    <p>Purchase Order <t t-out="object.name">PO001</t> has received Level 1 approval but still requires Level 2 approval:</p>
+    <ul>
+        <li><strong>Purchase Order:</strong> <t t-out="object.name">PO001</t></li>
+        <li><strong>Vendor:</strong> <t t-out="object.partner_id.name">Vendor Name</t></li>
+        <li><strong>Amount:</strong> <t t-out="object.amount_total">25000.00</t> <t t-out="object.currency_id.name">USD</t></li>
+        <li><strong>Level 1 Approved by:</strong> <t t-out="object.level1_approver_id.name">Level 1 Approver</t></li>
+        <li><strong>Level 1 Approval Date:</strong> <t t-out="object.level1_approval_date">2023-01-01</t></li>
+    </ul>
+    <p>Waiting for Level 2 approval to proceed.</p>
+    <p>Best regards,<br/>Purchase Team</p>
+</div>
+        </field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+
+    <!-- Level 2 Approved Template -->
+    <record id="mail_template_level2_approved" model="mail.template">
+        <field name="name">Purchase Order: Level 2 Approved</field>
+        <field name="model_id" ref="purchase.model_purchase_order"/>
+        <field name="subject">Purchase Order {{ object.name }} - Fully Approved</field>
+        <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px;">
+    <p>Hello,</p>
+    <p>Your purchase order has received full approval:</p>
+    <ul>
+        <li><strong>Purchase Order:</strong> <t t-out="object.name">PO001</t></li>
+        <li><strong>Vendor:</strong> <t t-out="object.partner_id.name">Vendor Name</t></li>
+        <li><strong>Amount:</strong> <t t-out="object.amount_total">25000.00</t> <t t-out="object.currency_id.name">USD</t></li>
+        <li><strong>Level 2 Approved by:</strong> <t t-out="object.level2_approver_id.name">Level 2 Approver</t></li>
+        <li><strong>Level 2 Approval Date:</strong> <t t-out="object.level2_approval_date">2023-01-01</t></li>
+    </ul>
+    <p>You can now proceed with the purchase.</p>
+    <p>Best regards,<br/>Purchase Team</p>
+</div>
+        </field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+
+    <!-- Auto Approved Template -->
+    <record id="mail_template_auto_approved" model="mail.template">
+        <field name="name">Purchase Order: Auto Approved</field>
+        <field name="model_id" ref="purchase.model_purchase_order"/>
+        <field name="subject">Purchase Order {{ object.name }} - Auto Approved</field>
+        <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px;">
+    <p>Hello,</p>
+    <p>Your purchase order has been automatically approved:</p>
+    <ul>
+        <li><strong>Purchase Order:</strong> <t t-out="object.name">PO001</t></li>
+        <li><strong>Vendor:</strong> <t t-out="object.partner_id.name">Vendor Name</t></li>
+        <li><strong>Amount:</strong> <t t-out="object.amount_total">3000.00</t> <t t-out="object.currency_id.name">USD</t></li>
+    </ul>
+    <p>The order amount is within the auto-approval limit.</p>
+    <p>Best regards,<br/>Purchase Team</p>
+</div>
+        </field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+
+    <!-- Rejected Template -->
+    <record id="mail_template_rejected" model="mail.template">
+        <field name="name">Purchase Order: Rejected</field>
+        <field name="model_id" ref="purchase.model_purchase_order"/>
+        <field name="subject">Purchase Order {{ object.name }} - Rejected</field>
+        <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px;">
+    <p>Hello,</p>
+    <p>Your purchase order has been rejected:</p>
+    <ul>
+        <li><strong>Purchase Order:</strong> <t t-out="object.name">PO001</t></li>
+        <li><strong>Vendor:</strong> <t t-out="object.partner_id.name">Vendor Name</t></li>
+        <li><strong>Amount:</strong> <t t-out="object.amount_total">15000.00</t> <t t-out="object.currency_id.name">USD</t></li>
+    </ul>
+    <p>Please review and resubmit if necessary.</p>
+    <p>Best regards,<br/>Purchase Team</p>
+</div>
+        </field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+
+</odoo>
